@@ -5,6 +5,18 @@
  * Constructors
  * ------------
  * Logger(path) - path of class/function/placement that the logger is being defined for use with.
+ * Logger(path, options) - path of class/function/placement that the logger is being defined for use with.
+ *
+ * Options
+ * -------
+ * path - (String) a path directing users to where this logging statement was called from
+ * forceDir - (Boolean) Forces use of console.dir() for object printing. Used for browsers that don't support objects in console logging
+ * forceJSON - (Boolean) Forces use of JSON.stringify() for object printing. Used for browsers that don't support objects in console logging.  Alternate for forceDir if console.dir not supported.
+ * format - (String) '[%UTC%] %PATH% %MSG%',
+ * objectEcho - (Boolean)
+ * objectTypes - (Array<String>) returned strings from typeof that will be interpreted as objects to be logged out as an object,
+ * traceOnError - (Boolean)
+ * traceOnWarn - (Boolean)
  * 
  */
 
