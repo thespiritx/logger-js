@@ -43,6 +43,10 @@ Version History
 - Minification provided by: https://javascript-minifier.com/
 - Obfucation provided by: https://javascriptobfuscator.com/Javascript-Obfuscator.aspx
 
+2.0.1
+- Corrected className and methodName overrides
+- Corrected usage of console functions
+
 Future
 =============
 Allow other methods of logging other than window.console

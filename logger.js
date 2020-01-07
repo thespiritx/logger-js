@@ -21,9 +21,9 @@
         g.loggerJs = f();
     }
 })(function () {
-	
+
 	const VERSION = '1.0.0';
-	
+
 	const CONSTANTS = {
 		TYPES_FLAT: ['string', 'number', 'bigint', 'symbol', 'boolean'],
 		TYPES_EMPTY: ['null', 'undefined'],
@@ -45,9 +45,9 @@
 		ASSERT_ON: true,
 		FMT_DELIMITER: " : "
 	}
-	
+
 	function Logger(obj) {
-		
+
 		this._options = {
 			logLevel: CONSTANTS['LEVEL_INFO'],
 			className: null,
@@ -57,13 +57,15 @@
 			debugLevel: loggerJs.consts['LEVEL_ALL'],
 			assertToggle: loggerJs.consts['ASSERT_ON']
 		};
-		
+
 		for (let key in obj){
 			this._options[key] = obj[key];
 		}
-		
+
+		return this;
+
 	}
-	
+
 	/**
 	  * Mark any object with an incrementing number
 	  * used for keeping track of objects
@@ -75,7 +77,7 @@
 	  let _stamp = (function () {
 	    let keys = {};
 	    return function stamp (obj, key) {
-	      
+
 	      // get group key
 	      key = key || 'introjs-stamp';
 
@@ -91,17 +93,17 @@
 	      return obj[key];
 	    };
 	  })();
-	
+
 	function _Logger_Init() {
 		return this._options;
 	}
-	
+
 	function _Logger_Clear(){
 		if(window.console) {
 			console.clear();
 		}
 	}
-	
+
 	function _Logger_Count(call, obj) {
 		if(window.console) {
 			switch(call) {
@@ -114,7 +116,7 @@
 			}
 		}
 	}
-	
+
 	function _Logger_Group(call, obj) {
 		if(_Verify_Level(obj, 'LEVEL_ALL') && window.console) {
 			switch(call) {
@@ -130,7 +132,7 @@
 			}
 		}
 	}
-	
+
 	function _Logger_Profile(call, obj) {
 		if(_Verify_Level(obj, 'LEVEL_ALL') && window.console) {
 			switch(call) {
@@ -146,7 +148,7 @@
 			}
 		}
 	}
-	
+
 	function _Logger_Timer(call, obj) {
 		if(_Verify_Level(obj, 'LEVEL_ALL') && window.console) {
 			switch(call) {
@@ -162,7 +164,7 @@
 			}
 		}
 	}
-	
+
 	function _Logger_Console(obj) {
 		if(_Verify_Level(obj, 'LEVEL_FATAL') && window.console) {
 			switch(obj.logLevel){
@@ -176,25 +178,25 @@
 				case 'debug':
 					if(_Verify_Level(obj, 'LEVEL_DEBUG'))
 						if(obj.logObjs != null) {
-							console.debug(obj.assert, obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
+							console.debug(obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
 						} else {
-							console.debug(obj.assert, _Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
+							console.debug(_Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
 						}
 					break;
 				case 'error':
 					if(_Verify_Level(obj, 'LEVEL_ERROR'))
 						if(obj.logObjs != null) {
-							console.error(obj.assert, obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
+							console.error(obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
 						} else {
-							console.error(obj.assert, _Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
+							console.error(_Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
 						}
 					break;
 				case 'info':
 					if(_Verify_Level(obj, 'LEVEL_INFO'))
 						if(obj.logObjs != null) {
-							console.info(obj.assert, obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
+							console.info(obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
 						} else {
-							console.info(obj.assert, _Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
+							console.info(_Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
 						}
 					break;
 				case 'dir':
@@ -221,23 +223,23 @@
 				case 'warn':
 					if(_Verify_Level(obj, 'LEVEL_WARN'))
 						if(obj.logObjs != null) {
-							console.warn(obj.assert, obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
+							console.warn(obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
 						} else {
-							console.warn(obj.assert, _Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
+							console.warn(_Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
 						}
 					break;
 				case 'log':
 				default :
 					if(_Verify_Level(obj, 'LEVEL_FATAL'))
 						if(obj.logObjs != null) {
-							console.log(obj.assert, obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
+							console.log(obj.logObjs[0], obj.logObjs[1], obj.logObjs[2]);
 						} else {
-							console.log(obj.assert, _Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
+							console.log(_Verify_Type('TYPES_FLAT', obj.logMsg)?obj.logMsg:obj.logObj);
 						}
 			}
 		}
 	}
-	
+
 	function _Get_Formatted_Msg(obj, msg) {
 		let fmtmsg = "";
 		if(obj.logLabel != null) fmtmsg += obj.logLabel;
@@ -252,7 +254,7 @@
 	   const results = (funcNameRegex).exec(obj.constructor.toString());
 	   return (results && results.length > 1) ? results[1] : "";
 	}
-	
+
 	function _Set_Option(instance, name, value, obj = null){
 		if(obj == null) obj = instance._options;
 		obj[name] = value;
@@ -265,49 +267,53 @@
 		}
 		return obj;
 	}
-	
+
 	function _Verify_Level(obj, level){
 		return obj.debugLevel>=loggerJs.consts[level];
 	}
 	function _Verify_Type(types, argument){
 		return loggerJs.consts[types].includes(typeof argument);
 	}
-	
+
 	function _Set_Fnc_Options(obj, input) {
-		
+
 		if(_Verify_Type('TYPES_FLAT', input.arg1)){
-			if(_Verify_Type('TYPES_FLAT', input.arg2)){
-				obj = _Set_Option(this, 'className', input.arg2, obj);
-			} else if (_Verify_Type('TYPES_OBJECT', input.arg2)) {
-				obj = _Set_Option(this, 'className', _Get_Obj_Name(input.arg2), obj);
+			if(_Verify_Type('TYPES_EMPTY', obj.className)) {
+				if(_Verify_Type('TYPES_FLAT', input.arg2)){
+					obj = _Set_Option(this, 'className', input.arg2, obj);
+				} else if (_Verify_Type('TYPES_OBJECT', input.arg2)) {
+					obj = _Set_Option(this, 'className', _Get_Obj_Name(input.arg2), obj);
+				}
 			}
-			
-			if(_Verify_Type('TYPES_FLAT', input.arg3)){
-				obj = _Set_Option(this, 'methodName', input.arg3, obj);
-			} else if (_Verify_Type('TYPES_OBJECT', input.arg3)) {
-				obj = _Set_Option(this, 'methodName', input.caller, obj);
+
+			if(_Verify_Type('TYPES_EMPTY', obj.methodName)) {
+				if(_Verify_Type('TYPES_FLAT', input.arg3)){
+					obj = _Set_Option(this, 'methodName', input.arg3, obj);
+				} else if (_Verify_Type('TYPES_OBJECT', input.arg3)) {
+					obj = _Set_Option(this, 'methodName', input.caller, obj);
+				}
 			}
-			
+
 			obj = _Set_Option(this, 'logMsg', _Get_Formatted_Msg(obj,input.arg1), obj);
 		} else {
-			
+
 			if(!_Verify_Type('TYPES_EMPTY', input.arg2)) {
 				obj = _Set_Option(this, 'logObjs', [input.arg1, input.arg2], obj);
 			} else {
 				obj = _Set_Option(this, 'logObj', input.arg1, obj);
 			}
-			
+
 		}
-		
+
 		return obj;
-		
+
 	}
-	
+
 	let loggerJs = function(obj) {
-		
+
 		let instance;
-		
-		if (typeof (targetElm) === 'object') {
+
+		if (typeof (obj) === 'object') {
 	      // create a new instance
 	      instance = new Logger(obj);
 
@@ -319,25 +325,25 @@
 
 	        instance = new Logger(options);
 	    } else {
-	    	
+
 	      // use defaults
 	      instance = new Logger();
 	    }
-		
+
 	    // add instance to list of _instances
 	    // passing group to _stamp to increment
 	    // from 0 onward somewhat reliably
 	    loggerJs.instances[ _stamp(instance, 'introjs-instance') ] = instance;
 
 		return instance;
-		
+
 	};
-	
+
 	loggerJs.version = VERSION;
 	loggerJs.consts = CONSTANTS;
-	
+
 	loggerJs.instances = {};
-	
+
 	loggerJs.fn = Logger.prototype = {
 		assert: function (assertion, arg1, arg2 = null, arg3 = null) {
 			let obj = _Set_Options(this, {
@@ -478,6 +484,6 @@
 			_Logger_Console(obj);
 		}
 	}
-	
+
 	return loggerJs;
 });
